@@ -116,7 +116,7 @@ class Game(tk.Frame):
         self.setup_metricks()
         # manually set players
         self.map.set(1, 1, StaticCell(0))
-        self.map.set(self.MAP_SIZE - 1, self.MAP_SIZE - 1, StaticCell(1))
+        self.map.set(self.MAP_SIZE - 2, self.MAP_SIZE - 2, StaticCell(1))
         self.player_turn = 0
         self.animations = []
 
