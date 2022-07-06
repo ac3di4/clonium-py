@@ -7,7 +7,7 @@ class Direction:
     LEFT = 3
 
 class Cell:
-    SPEED = 0.02
+    SPEED = 0.01
 
     def __init__(self, player_id, x, y, direction=Direction.UP):
         self.player_id = player_id
@@ -21,6 +21,8 @@ class Cell:
     
     def step(self):
         if self.is_completed():
+            self.x = round(self.x)
+            self.y = round(self.y)
             return True
         if self.direction == Direction.UP:
             self.y -= self.SPEED
@@ -119,6 +121,9 @@ class Game(tk.Frame):
         self.animations = []
 
     def mouse_click(self, event):
+        if self.animations:
+            return
+
         x = event.x // self.slot_size
         xrem = event.x % self.slot_size
         y = event.y // self.slot_size
@@ -152,7 +157,7 @@ class Game(tk.Frame):
             pass
             # TODO: check for a winner
         else:
-            self.after(10, self.game_loop())
+            self.after(10, self.game_loop)
     
     def draw(self):
         self.canvas.delete("tmp")
@@ -210,11 +215,11 @@ class Game(tk.Frame):
 
     def draw_moving(self):
         for anim in self.animations:
-            x = anim.x * self.slot_size + self.cell_size
-            y = anim.x * self.slot_size + self.cell_size
-            color = "#000000"
+            x = anim.x * self.slot_size + self.cell_space
+            y = anim.y * self.slot_size + self.cell_space
+            color = "#ee1010"
             if anim.player_id == 1:
-                color = "#000000"
+                color = "#1010ee"
             self.draw_player(x, y, color)
 
 
