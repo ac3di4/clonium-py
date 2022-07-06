@@ -6,9 +6,8 @@ class Direction:
     DOWN = 2
     LEFT = 3
 
-
 class Cell:
-    SPEED = 1
+    SPEED = 0.02
 
     def __init__(self, player_id, x, y, direction=Direction.UP):
         self.player_id = player_id
@@ -32,6 +31,8 @@ class Cell:
         else:
             self.x -= self.SPEED
         self.completion += self.SPEED
+        self.x = round(self.x, 6)
+        self.y = round(self.y, 6)
         return False
 
 
@@ -151,7 +152,7 @@ class Game(tk.Frame):
             pass
             # TODO: check for a winner
         else:
-            self.after(50, self.game_loop())
+            self.after(10, self.game_loop())
     
     def draw(self):
         self.canvas.delete("tmp")
@@ -179,7 +180,7 @@ class Game(tk.Frame):
                     color = "#1010ee"
                 self.draw_player(xx, yy, color, cell.value)
     
-    def draw_player(self, x, y, color, value):
+    def draw_player(self, x, y, color, value=0):
         # args - coords of the cell (not slot)
         player_space = (self.cell_size - self.player_size) / 2
         xx = x + player_space
@@ -211,10 +212,10 @@ class Game(tk.Frame):
         for anim in self.animations:
             x = anim.x * self.slot_size + self.cell_size
             y = anim.x * self.slot_size + self.cell_size
-            color = "#ee1010"
+            color = "#000000"
             if anim.player_id == 1:
-                color = "#1010ee"
-            self.draw_player(x, y, color, 1)
+                color = "#000000"
+            self.draw_player(x, y, color)
 
 
 
