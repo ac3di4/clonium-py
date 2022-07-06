@@ -80,6 +80,19 @@ class Grid:
     def get(self, x, y):
         return self.grid[int(x) + int(y) * self.size]
     
+    def get_winner(self):
+        i = 0
+        while i < len(self.grid) and (not self.grid[i]):
+            i += 1
+        if i >= len(self.grid):
+            return None
+        winner_id = self.grid[i].player_id
+        while i < len(self.grid) and (not self.grid[i] or self.grid[i].player_id == winner_id):
+            i += 1
+        if i < len(self.grid):
+            return None
+        return winner_id
+    
     def set(self, x, y, value):
         self.grid[int(x) + int(y) * self.size] = value
 
@@ -154,8 +167,13 @@ class Game(tk.Frame):
 
         # check for wins
         if not self.animations:
-            pass
-            # TODO: check for a winner
+            winner = self.map.get_winner()
+            if winner == 0:
+                self.draw_text(300, 200, "Player 1 wins")
+                self.canvas.unbind("<Button-1>")
+            elif winner == 1:
+                self.draw_text(300, 200, "Player 2 wins")
+                self.canvas.unbind("<Button-1>")
         else:
             self.after(10, self.game_loop)
     
@@ -212,6 +230,10 @@ class Game(tk.Frame):
     
     def draw_circle(self, x, y, rad, fill="#eeeeee"):
         self.canvas.create_oval(x - rad, y - rad, x + rad, y + rad, fill=fill, tags="tmp")
+    
+    def draw_text(self, x, y, text, size="40"):
+        font = ('Forte', size)
+        return self.canvas.create_text(x, y, text=text, font=font, fill="#10ee10")
 
     def draw_moving(self):
         for anim in self.animations:
