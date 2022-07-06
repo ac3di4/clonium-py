@@ -7,7 +7,7 @@ class Direction:
     LEFT = 3
 
 class Cell:
-    SPEED = 0.01
+    SPEED = 0.02
 
     def __init__(self, player_id, x, y, direction=Direction.UP):
         self.player_id = player_id
@@ -134,7 +134,7 @@ class Game(tk.Frame):
             return
         
         cell = self.map.get(x, y)
-        if cell and cell.player_id != self.player_turn:
+        if not cell or cell.player_id != self.player_turn:
             return
         self.animations = self.map.put(self.player_turn, x, y)
         self.player_turn = (self.player_turn + 1) % 2
